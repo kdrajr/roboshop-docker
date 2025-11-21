@@ -4,6 +4,6 @@ USER roboshop
 WORKDIR /opt/app
 COPY server.js package.json ./
 RUN npm install
-ENV MONGO=true \
+ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
 CMD ["node", "server.js"]
