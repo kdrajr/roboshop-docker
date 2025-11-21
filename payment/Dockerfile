@@ -1,7 +1,6 @@
 FROM python:3.14
 EXPOSE 8080/tcp
-RUN dnf install python3 gcc python3-devel -y && \
-    useradd --system --home /opt/app --shell /sbin/nologin --comment "roboshop system user" roboshop
+RUN useradd --system --home /opt/app --shell /sbin/nologin --comment "roboshop system user" roboshop
 USER roboshop
 WORKDIR /opt/app
 COPY static/ ./
