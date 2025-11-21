@@ -1,0 +1,3 @@
+FROM rabbitmq:3.13
+RUN rabbitmqctl add_user roboshop roboshop123 \
+    rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
