@@ -1,10 +1,12 @@
 FROM python:3.14
 EXPOSE 8080/tcp
-# RUN useradd --system --home /opt/app --shell /sbin/nologin --comment "roboshop system user" roboshop
-# USER roboshop
+RUN useradd --system --home /opt/app --shell /sbin/nologin --comment "roboshop system user" roboshop
+USER roboshop
 WORKDIR /opt/app
 COPY static/ ./
+USER root
 RUN pip3 install -r requirements.txt
+USER roboshop
 ENV CART_HOST="cart" \
     CART_PORT="8080" \
     USER_HOST="user" \
