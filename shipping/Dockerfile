@@ -1,4 +1,4 @@
-FROM maven:3.9.11-eclipse-temurin-8-alpine AS build
+FROM maven:3.9.11-eclipse-temurin-11-alpine AS build
 WORKDIR /opt/shipping
 COPY appcode/ ./
 RUN mvn clean package && \
@@ -6,7 +6,7 @@ RUN mvn clean package && \
 
 
 
-FROM maven:3.9.11-eclipse-temurin-8-alpine
+FROM maven:3.9.11-eclipse-temurin-11-alpine
 EXPOSE 8080/tcp
 WORKDIR /opt/shipping
 COPY --from=build /opt/shipping /opt/shipping/
