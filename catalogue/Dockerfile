@@ -1,6 +1,5 @@
 FROM node:20-alpine3.21 AS build
 EXPOSE 8080/tcp
-RUN adduser -D -G roboshop roboshop
 RUN addgroup -S roboshop && adduser -S -h /opt/catalogue -G roboshop roboshop
 USER roboshop
 WORKDIR /opt/catalogue
