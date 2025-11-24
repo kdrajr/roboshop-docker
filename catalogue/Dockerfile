@@ -1,15 +1,16 @@
 FROM node:20-alpine3.21 AS build
-EXPOSE 8080/tcp
 WORKDIR /opt/catalogue
 COPY server.js package.json ./
 RUN npm install
 
 
 FROM node:20-alpine3.21
-RUN addgroup -S roboshop && adduser -S -h /opt/catalogue -G roboshop roboshop
-USER roboshop
+EXPOSE 8080/tcp
+RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
 WORKDIR /opt/catalogue
 COPY --from=build /opt/catalogue ./
+RUN chown -R roboshop:roboshop ./
+USER roboshop
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
 CMD ["node", "server.js"]
