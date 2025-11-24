@@ -1,11 +1,11 @@
-FROM python:3.11-alpine AS build
+FROM python:3.11-alpine3.19 AS build
 WORKDIR /opt/payment
 COPY appcode/ ./
 RUN pip3 install -r requirements.txt
 
 
 
-FROM python:3.11-alpine
+FROM python:3.11-alpine3.19
 EXPOSE 8080/tcp
 WORKDIR /opt/payment
 COPY --from=build /opt/payment /opt/payment/
