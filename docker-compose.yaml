@@ -84,7 +84,9 @@ volumes:
   mysql:
     name: mysql
   redis:
+    name: redis
   rabbitmq:
+    name: rabbitmq
 
 
   

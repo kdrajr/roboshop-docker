@@ -1,4 +1,5 @@
 FROM node:20
+EXPOSE 8080/tcp
 RUN useradd --system --home /opt/app --shell /sbin/nologin --comment "roboshop system user" roboshop
 USER roboshop
 WORKDIR /opt/app
