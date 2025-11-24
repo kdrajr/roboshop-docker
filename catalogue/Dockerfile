@@ -1,6 +1,6 @@
 FROM node:20-alpine3.21 AS build
 EXPOSE 8080/tcp
-RUN adduser -S -D -h /opt/catalogue -s /sbin/nologin roboshop
+RUN adduser -S -D -h /opt/catalogue -s /sbin/nologin -G roboshop roboshop
 USER roboshop
 WORKDIR /opt/catalogue
 COPY server.js package.json ./
