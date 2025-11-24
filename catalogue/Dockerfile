@@ -1,13 +1,13 @@
 FROM node:20-alpine3.21 AS build
 EXPOSE 8080/tcp
-RUN addgroup -S roboshop && adduser -S -h /opt/catalogue -G roboshop roboshop
-USER roboshop
 WORKDIR /opt/catalogue
 COPY server.js package.json ./
 RUN npm install
 
 
 FROM node:20-alpine3.21
+RUN addgroup -S roboshop && adduser -S -h /opt/catalogue -G roboshop roboshop
+USER roboshop
 WORKDIR /opt/catalogue
 COPY --from=build /opt/catalogue ./
 ENV MONGO="true" \
