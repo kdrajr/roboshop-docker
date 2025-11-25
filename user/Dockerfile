@@ -7,14 +7,17 @@ RUN npm install
 FROM node:20-alpine3.21
 EXPOSE 8080/tcp
 WORKDIR /opt/user
-COPY --from=build /opt/user /opt/user/
+LABEL com.project="roboshop" \
+      component="user" \
+      created_by="Dheeraj"
 ENV MONGO="true" \
     REDIS_URL="redis://redis:6379" \
     MONGO_URL="mongodb://mongodb:27017/users"
-RUN addgroup -S roboshop && adduser -S -G roboshop roboshop && \
-    chown -R roboshop:roboshop /opt/user
+COPY --from=build --chown=roboshop:roboshop /opt/user /opt/user/
+RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
 USER roboshop
-CMD ["node", "server.js"]
+ENTRYPOINT ["node"]
+CMD ["server.js"]
 
 
 

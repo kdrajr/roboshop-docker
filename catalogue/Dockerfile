@@ -7,14 +7,17 @@ RUN npm install
 FROM node:20-alpine3.21
 EXPOSE 8080/tcp
 WORKDIR /opt/catalogue
-COPY --from=build /opt/catalogue /opt/catalogue
+LABEL com.project="roboshop" \
+      component="catalogue" \
+      created_by="Dheeraj"
+COPY --from=build --chown=roboshop:roboshop /opt/catalogue /opt/catalogue
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
 #creating system user and system group to run catalogue application
-RUN addgroup -S roboshop && adduser -S -G roboshop roboshop && \
-    chown -R roboshop:roboshop /opt/catalogue
+RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
 USER roboshop
-CMD ["node", "server.js"]
+ENTRYPOINT ["node"]
+CMD ["server.js"]
 
 
 

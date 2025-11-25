@@ -7,14 +7,17 @@ RUN npm install
 FROM node:20-alpine3.21
 EXPOSE 8080/tcp
 WORKDIR /opt/cart
-COPY --from=build /opt/cart /opt/cart/
+LABEL com.project="roboshop" \
+      component="cart" \
+      created_by="Dheeraj"
 ENV REDIS_HOST="redis" \
     CATALOGUE_HOST="catalogue" \
     CATALOGUE_PORT="8080"
-RUN addgroup -S roboshop && adduser -S -G roboshop roboshop && \
-    chown -R roboshop:roboshop /opt/cart
+COPY --from=build --chown=roboshop:roboshop /opt/cart /opt/cart/
+RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
 USER roboshop
-CMD ["node", "server.js"]
+ENTRYPOINT ["node"]
+CMD ["server.js"]
 
 
 

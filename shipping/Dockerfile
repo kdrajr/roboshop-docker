@@ -1,4 +1,4 @@
-FROM maven:3.9.11-eclipse-temurin-11-alpine AS build
+FROM maven:3.9.11 AS build
 WORKDIR /opt/shipping
 COPY appcode/ ./
 RUN mvn clean package && \
@@ -6,16 +6,16 @@ RUN mvn clean package && \
 
 
 
-FROM maven:3.9.11-eclipse-temurin-11-alpine
+FROM eclipse-temurin:17-jre-alpine
 EXPOSE 8080/tcp
 WORKDIR /opt/shipping
-COPY --from=build /opt/shipping /opt/shipping/
 ENV CART_ENDPOINT="cart:8080" \
     DB_HOST="mysql"
-RUN addgroup -S roboshop && adduser -S -G roboshop roboshop && \
-    chown -R roboshop:roboshop /opt/shipping
+COPY --from=build --chown=roboshop:roboshop /opt/shipping/shipping.jar ./
+RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
 USER roboshop
-CMD ["java", "-jar", "shipping.jar"]
+ENTRYPOINT ["java"]
+CMD ["-jar", "shipping.jar"]
 
 
 

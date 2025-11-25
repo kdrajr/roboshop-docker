@@ -1,14 +1,16 @@
-FROM python:3.11-slim AS build
+FROM python:3.10-slim AS build
 WORKDIR /opt/payment
 COPY appcode/ ./
 RUN pip3 install -r requirements.txt
 
 
 
-FROM python:3.11-slim
+FROM python:3.10-slim
 EXPOSE 8080/tcp
 WORKDIR /opt/payment
-COPY --from=build /opt/payment /opt/payment/
+LABEL com.project="roboshop" \
+      component="payment" \
+      created_by="Dheeraj"
 ENV CART_HOST="cart" \
     CART_PORT="8080" \
     USER_HOST="user" \
@@ -16,10 +18,11 @@ ENV CART_HOST="cart" \
     AMQP_HOST="rabbitmq" \
     AMQP_USER="roboshop" \
     AMQP_PASS="roboshop123"
-RUN addgroup -S roboshop && adduser -S -G roboshop roboshop && \
-    chown -R roboshop:roboshop /opt/payment
+COPY --from=build --chown=roboshop:roboshop /opt/payment /opt/payment/
+RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
 USER roboshop
-CMD ["uwsgi", "--ini", "payment.ini"]
+ENTRYPOINT ["uwsgi"]
+CMD ["--ini", "payment.ini"]
 
 
 
