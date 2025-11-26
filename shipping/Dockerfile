@@ -11,8 +11,8 @@ EXPOSE 8080/tcp
 WORKDIR /opt/shipping
 ENV CART_ENDPOINT="cart:8080" \
     DB_HOST="mysql"
-COPY --from=build --chown=roboshop:roboshop /opt/shipping/shipping.jar ./
 RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
+COPY --from=build --chown=roboshop:roboshop /opt/shipping/shipping.jar ./
 USER roboshop
 ENTRYPOINT ["java"]
 CMD ["-jar", "shipping.jar"]

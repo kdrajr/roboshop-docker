@@ -24,10 +24,10 @@ ENV CART_HOST="cart" \
     AMQP_USER="roboshop" \
     AMQP_PASS="roboshop123"
 COPY --from=build /usr/local /usr/local
-COPY --chown=roboshop:roboshop appcode/ /opt/payment/
 # Runtime deps only
 RUN apk add --no-cache pcre
 RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
+COPY --chown=roboshop:roboshop appcode/ /opt/payment/
 USER roboshop
 ENTRYPOINT ["uwsgi"]
 CMD ["--ini", "payment.ini"]

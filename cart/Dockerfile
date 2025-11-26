@@ -13,8 +13,8 @@ LABEL com.project="roboshop" \
 ENV REDIS_HOST="redis" \
     CATALOGUE_HOST="catalogue" \
     CATALOGUE_PORT="8080"
-COPY --from=build --chown=roboshop:roboshop /opt/cart /opt/cart/
 RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
+COPY --from=build --chown=roboshop:roboshop /opt/cart /opt/cart/
 USER roboshop
 ENTRYPOINT ["node"]
 CMD ["server.js"]

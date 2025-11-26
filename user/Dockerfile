@@ -13,8 +13,8 @@ LABEL com.project="roboshop" \
 ENV MONGO="true" \
     REDIS_URL="redis://redis:6379" \
     MONGO_URL="mongodb://mongodb:27017/users"
-COPY --from=build --chown=roboshop:roboshop /opt/user /opt/user/
 RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
+COPY --from=build --chown=roboshop:roboshop /opt/user /opt/user/
 USER roboshop
 ENTRYPOINT ["node"]
 CMD ["server.js"]
