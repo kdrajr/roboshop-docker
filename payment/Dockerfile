@@ -1,11 +1,16 @@
-FROM python:3.10-slim AS build
+FROM python:3.9.25-alpine3.22 AS build
 WORKDIR /opt/payment
-COPY appcode/ ./
-RUN pip3 install -r requirements.txt
+# uWSGI build prerequisites
+RUN apk add --no-cache \
+    build-base \
+    linux-headers \
+    pcre-dev \
+COPY appcode/requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 
 
-FROM python:3.10-slim
+FROM python:3.9.25-alpine3.22
 EXPOSE 8080/tcp
 WORKDIR /opt/payment
 LABEL com.project="roboshop" \
@@ -18,7 +23,10 @@ ENV CART_HOST="cart" \
     AMQP_HOST="rabbitmq" \
     AMQP_USER="roboshop" \
     AMQP_PASS="roboshop123"
-COPY --from=build --chown=roboshop:roboshop /opt/payment /opt/payment/
+COPY --from=build /usr/local /usr/local
+COPY --chown=roboshop:roboshop appcode/ /opt/payment/
+# Runtime deps only
+RUN apk add --no-cache pcre
 RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
 USER roboshop
 ENTRYPOINT ["uwsgi"]
