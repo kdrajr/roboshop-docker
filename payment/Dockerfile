@@ -4,7 +4,7 @@ WORKDIR /opt/payment
 RUN apk add --no-cache \
     build-base \
     linux-headers \
-    pcre-dev \
+    pcre-dev 
 COPY appcode/requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt
 
