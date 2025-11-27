@@ -2,14 +2,16 @@ name: roboshop
 
 services:
   mongodb:
-    image: mongodb:v1
-    build: ./mongodb
+    image: kdrajr/mongodb:v1
+    build: 
+      context: ./mongodb
+      dockerfile: Dockerfile
     container_name: mongodb
     volumes:
       - mongodb:/data/db
 
   mysql:
-    image: mysql:v1
+    image: kdrajr/mysql:v1
     build: ./mysql
     container_name: mysql
     volumes:
@@ -31,14 +33,14 @@ services:
       - rabbitmq:/var/lib/rabbitmq
 
   catalogue:
-    image: catalogue:v1
+    image: kdrajr/catalogue:v1
     build: ./catalogue
     container_name: catalogue
     depends_on:
       - mongodb
 
   user:
-    image: user:v1
+    image: kdrajr/user:v1
     build: ./user
     container_name: user
     depends_on:
@@ -46,7 +48,7 @@ services:
       - mongodb
 
   cart:
-    image: cart:v1
+    image: kdrajr/cart:v1
     build: ./cart
     container_name: cart
     depends_on:
@@ -54,7 +56,7 @@ services:
       - catalogue
 
   shipping:
-    image: shipping:v1
+    image: kdrajr/shipping:v1
     build: ./shipping
     container_name: shipping
     depends_on:
@@ -62,7 +64,7 @@ services:
       - cart
 
   payment:
-    image: payment:v1
+    image: kdrajr/payment:v1
     build: ./payment
     container_name: payment
     depends_on:
@@ -71,7 +73,7 @@ services:
       - user
 
   frontend:
-    image: frontend:v1
+    image: kdrajr/frontend:v1
     build: ./frontend
     container_name: frontend
     ports:
